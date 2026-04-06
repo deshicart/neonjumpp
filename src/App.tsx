@@ -680,8 +680,6 @@ class GameScene extends Phaser.Scene {
   private keys!: Phaser.Types.Input.Keyboard.CursorKeys;
   private touchL = false;
   private touchR = false;
-  private tiltX = 0;
-  private tiltHandler: ((e: DeviceOrientationEvent) => void) | null = null;
 
   // Generation
   private genY = 0;
@@ -710,7 +708,6 @@ class GameScene extends Phaser.Scene {
     this.particles = [];
     this.touchL = false;
     this.touchR = false;
-    this.tiltX = 0;
     this.camY = H;
     this.genY = H;
     this.px = W / 2;
@@ -770,12 +767,6 @@ class GameScene extends Phaser.Scene {
 
     // Keyboard
     if (this.input.keyboard) this.keys = this.input.keyboard.createCursorKeys();
-
-    // Device tilt
-    this.tiltHandler = (e: DeviceOrientationEvent) => {
-      if (e.gamma !== null) this.tiltX = Phaser.Math.Clamp(e.gamma / 28, -1, 1);
-    };
-    window.addEventListener("deviceorientation", this.tiltHandler);
 
     // Spawn starting platforms
     this.spawnPlatform(W / 2, H - 60, "normal");
@@ -941,8 +932,7 @@ class GameScene extends Phaser.Scene {
 
   private handleInput(d: number) {
     let hDir = 0;
-    if (Math.abs(this.tiltX) > 0.1)       hDir = this.tiltX;
-    else if (this.touchL)                   hDir = -1;
+    if (this.touchL)                        hDir = -1;
     else if (this.touchR)                   hDir = 1;
     else if (this.keys?.left?.isDown)       hDir = -1;
     else if (this.keys?.right?.isDown)      hDir = 1;
@@ -1486,8 +1476,6 @@ class GameScene extends Phaser.Scene {
 
   shutdown() {
     sfx.stopMusic();
-    if (this.tiltHandler) window.removeEventListener("deviceorientation", this.tiltHandler);
-    this.tiltHandler = null;
   }
 }
 
