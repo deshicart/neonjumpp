@@ -1,5 +1,5 @@
 // ============================================================
-// NeonLeap – Doodle Jump-style game with Enemies & Sound
+// Neon Jump – Doodle Jump-style game with Enemies & Sound
 // Built with Phaser 3 + React shell
 // ============================================================
 import { useEffect, useRef } from "react";
@@ -14,7 +14,7 @@ const SPRING_VEL = -1150;
 const MOVE_SPEED = 280;
 const PLT_W = 76;
 const PLT_H = 14;
-const BEST_KEY = "neonleap_best_v3";
+const BEST_KEY = "neonjump_best_v3";
 
 // Colors
 const C = {
@@ -500,7 +500,7 @@ class StartScene extends Phaser.Scene {
     });
 
     // Title
-    const title = this.add.text(W / 2, H * 0.17, "NEON\nLEAP", {
+    const title = this.add.text(W / 2, H * 0.17, "NEON\nJUMP", {
       fontFamily: "monospace", fontSize: "64px", color: "#00ffe7", align: "center",
       stroke: "#003333", strokeThickness: 5,
       shadow: { blur: 28, color: "#00ffe7", fill: true },
