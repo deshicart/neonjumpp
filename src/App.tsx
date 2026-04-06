@@ -500,7 +500,7 @@ class StartScene extends Phaser.Scene {
     });
 
     // Title
-    const title = this.add.text(W / 2, H * 0.17, "NEON\nLEAP", {
+    const title = this.add.text(W / 2, H * 0.17, "NEON\nJUMP", {
       fontFamily: "monospace", fontSize: "64px", color: "#00ffe7", align: "center",
       stroke: "#003333", strokeThickness: 5,
       shadow: { blur: 28, color: "#00ffe7", fill: true },
