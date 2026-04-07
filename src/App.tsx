@@ -6,8 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import Phaser from "phaser";
 
 // ─── Constants ───────────────────────────────────────────────
-const W = 400;
-const H = 680;
+const W = 360;
+const H = 640;
 const GRAVITY = 1400;
 const JUMP_VEL = -750;
 const SPRING_VEL = -1150;
