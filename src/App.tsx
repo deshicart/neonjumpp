@@ -1657,7 +1657,7 @@ export default function App() {
       scene: [BootScene, StartScene, GameScene, GameOverScene],
       scale: {
         mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
         width: W,
         height: H,
       },
@@ -1719,7 +1719,7 @@ export default function App() {
           height: "100%",
           display: "flex",
           justifyContent: "center",
-          alignItems: "flex-start",
+          alignItems: "center",
           background: "#05050f",
           overflow: "hidden",
           touchAction: "none",
