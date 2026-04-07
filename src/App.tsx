@@ -1657,7 +1657,7 @@ export default function App() {
       scene: [BootScene, StartScene, GameScene, GameOverScene],
       scale: {
         mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
+        autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
         width: W,
         height: H,
       },
@@ -1714,16 +1714,16 @@ export default function App() {
   return (
     <div
       ref={ref}
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "#05050f",
-        overflow: "hidden",
-        touchAction: "none",
-      }}
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          background: "#05050f",
+          overflow: "hidden",
+          touchAction: "none",
+        }}
     />
   );
 }
