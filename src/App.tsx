@@ -2,7 +2,7 @@
 // Neon Jump – Doodle Jump-style game with Enemies & Sound
 // Built with Phaser 3 + React shell
 // ============================================================
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Phaser from "phaser";
 
 // ─── Constants ───────────────────────────────────────────────
@@ -235,6 +235,15 @@ class SoundEngine {
 }
 
 const sfx = new SoundEngine();
+
+function isMobilePhoneLikeDevice() {
+  const ua = navigator.userAgent || navigator.vendor || "";
+  const mobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua);
+  const coarse = window.matchMedia("(pointer: coarse)").matches;
+  const noHover = window.matchMedia("(hover: none)").matches;
+  const narrowViewport = window.innerWidth <= 1024 || Math.min(window.screen.width, window.screen.height) <= 1024;
+  return mobileUA || (coarse && noHover && narrowViewport);
+}
 
 // ─── Texture Generation ──────────────────────────────────────
 function makeTextures(scene: Phaser.Scene) {
@@ -1623,8 +1632,20 @@ class GameOverScene extends Phaser.Scene {
 export default function App() {
   const ref = useRef<HTMLDivElement>(null);
   const gameRef = useRef<Phaser.Game | null>(null);
+  const [isMobileDevice, setIsMobileDevice] = useState(() => isMobilePhoneLikeDevice());
 
   useEffect(() => {
+    const onDeviceCheck = () => setIsMobileDevice(isMobilePhoneLikeDevice());
+    window.addEventListener("resize", onDeviceCheck);
+    window.addEventListener("orientationchange", onDeviceCheck);
+    return () => {
+      window.removeEventListener("resize", onDeviceCheck);
+      window.removeEventListener("orientationchange", onDeviceCheck);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isMobileDevice) return;
     if (gameRef.current || !ref.current) return;
 
     const config: Phaser.Types.Core.GameConfig = {
@@ -1662,7 +1683,33 @@ export default function App() {
       gameRef.current?.destroy(true);
       gameRef.current = null;
     };
-  }, []);
+  }, [isMobileDevice]);
+
+  if (!isMobileDevice) {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          background: "#05050f",
+          color: "#d8e4ff",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "24px",
+          textAlign: "center",
+          fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
+        }}
+      >
+        <div style={{ maxWidth: 420 }}>
+          <h1 style={{ fontSize: "1.2rem", marginBottom: 10 }}>Mobile Device Required</h1>
+          <p style={{ opacity: 0.85, lineHeight: 1.45 }}>
+            Neon Jump is optimized for mobile phones only. Please open this game on a mobile phone.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
