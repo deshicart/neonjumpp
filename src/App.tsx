@@ -1627,6 +1627,12 @@ export default function App() {
   useEffect(() => {
     if (gameRef.current || !ref.current) return;
 
+    const syncViewportVars = () => {
+      document.documentElement.style.setProperty("--app-width", `${window.innerWidth}px`);
+      document.documentElement.style.setProperty("--app-height", `${window.innerHeight}px`);
+    };
+    syncViewportVars();
+
     const config: Phaser.Types.Core.GameConfig = {
       type: Phaser.AUTO,
       width: W,
@@ -1644,14 +1650,25 @@ export default function App() {
         antialias: false,
         roundPixels: true,
       },
+      resolution: Math.min(window.devicePixelRatio || 1, 2),
       fps: { target: 60 },
       input: { activePointers: 3 },
       disableContextMenu: true,
     };
 
     gameRef.current = new Phaser.Game(config);
+    const onResize = () => {
+      syncViewportVars();
+      gameRef.current?.scale.refresh();
+    };
+    window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
+    window.visualViewport?.addEventListener("resize", onResize);
 
     return () => {
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onResize);
+      window.visualViewport?.removeEventListener("resize", onResize);
       gameRef.current?.destroy(true);
       gameRef.current = null;
     };
@@ -1661,8 +1678,8 @@ export default function App() {
     <div
       ref={ref}
       style={{
-        width: "100vw",
-        height: "100dvh",
+        width: "var(--app-width, 100vw)",
+        height: "var(--app-height, 100vh)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
